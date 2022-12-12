@@ -32,5 +32,14 @@ namespace ECommerce.Server.Services
                 Data = await _context.Set<Product>().ToListAsync()
             };
         }
+
+        public async Task<ServiceResponse<List<Product>>> GetProductsByCategoryAsync(string categoryUrl)
+        {
+            return new ServiceResponse<List<Product>>
+            {
+                Data = await _context.Set<Product>()
+                .Where(p => p.Category.Url.ToLower().Equals(categoryUrl.ToLower())).ToListAsync()
+            };
+        }
     }
 }
