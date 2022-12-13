@@ -1,19 +1,25 @@
 ﻿
 @page "/"
+@page "/search/{searchText}"
 @page "/{categoryUrl}"
 @inject IProductService ProductService
 
 <PageTitle>My Shop</PageTitle>
 
 
-@*<SurveyPrompt Title="How is Blazor working for you?" />*@
 <ProductsList></ProductsList>
 @code{
     [Parameter]
     public string? categoryUrl { get; set; } = null;
 
+    [Parameter]
+    public string? searchText { get; set; } = null;
+
     protected override async Task OnParametersSetAsync()
     {
-        await ProductService.GetProducts(categoryUrl);
+        if (searchText != null)
+            await ProductService.SearchProducts(searchText);
+        else
+            await ProductService.GetProducts(categoryUrl);
     }
 }
