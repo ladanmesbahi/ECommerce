@@ -14,7 +14,10 @@ namespace ECommerce.Server.Services
         public async Task<ServiceResponse<Product>> GetProductAsync(int productId)
         {
             var result = new ServiceResponse<Product>();
-            var product = await _context.Set<Product>().FindAsync(productId);
+            var product = await _context.Set<Product>()
+                .Include(p => p.Variants)
+                .ThenInclude(v => v.ProductType)
+                .FirstOrDefaultAsync(p => p.Id == productId);
             if (product is null)
             {
                 result.Success = false;
@@ -29,7 +32,9 @@ namespace ECommerce.Server.Services
         {
             return new ServiceResponse<List<Product>>
             {
-                Data = await _context.Set<Product>().ToListAsync()
+                Data = await _context.Set<Product>()
+                .Include(p => p.Variants)
+                .ToListAsync()
             };
         }
 
@@ -38,7 +43,9 @@ namespace ECommerce.Server.Services
             return new ServiceResponse<List<Product>>
             {
                 Data = await _context.Set<Product>()
-                .Where(p => p.Category.Url.ToLower().Equals(categoryUrl.ToLower())).ToListAsync()
+            .Where(p => p.Category.Url.ToLower().Equals(categoryUrl.ToLower()))
+            .Include(p => p.Variants)
+            .ToListAsync()
             };
         }
     }

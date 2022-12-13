@@ -15,7 +15,7 @@
                     <h4 class="mb-0">@product.Title</h4>
                 </a>
                 <p>@product.Description</p>
-                <h5 class="price">$@product.Price</h5>
+                <h5 class="price">@GetPriceText(product)</h5>
             </div>
         </li>
     }
@@ -29,5 +29,13 @@
     public void Dispose()
     {
         ProductService.ProductsChanged -= StateHasChanged;
+    }
+    private string GetPriceText(Product product)
+    {
+        if (product.Variants.Count == 0)
+            return string.Empty;
+        if (product.Variants.Count == 1)
+            return $"${product.Variants.Single().Price}";
+        return $"Starting at ${product.Variants.Min(v=>v.Price)}";
     }
 }
