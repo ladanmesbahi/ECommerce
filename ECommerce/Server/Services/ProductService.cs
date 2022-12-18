@@ -11,6 +11,17 @@ namespace ECommerce.Server.Services
             _context = context;
         }
 
+        public async Task<ServiceResponse<List<Product>>> GetFeaturedProducts()
+        {
+            return new ServiceResponse<List<Product>>
+            {
+                Data = await _context.Set<Product>()
+                .Include(p => p.Variants)
+                .Where(p => p.Featured)
+                .ToListAsync()
+            };
+        }
+
         public async Task<ServiceResponse<Product>> GetProductAsync(int productId)
         {
             var result = new ServiceResponse<Product>();

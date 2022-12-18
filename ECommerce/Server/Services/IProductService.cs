@@ -9,5 +9,6 @@ namespace ECommerce.Server.Services
         Task<ServiceResponse<List<Product>>> GetProductsByCategoryAsync(string categoryUrl);
         Task<ServiceResponse<List<Product>>> SearchProducts(string seacrhText);
         Task<ServiceResponse<List<string>>> GetProductSearchSuggestions(string searchText);
+        Task<ServiceResponse<List<Product>>> GetFeaturedProducts();
     }
 }

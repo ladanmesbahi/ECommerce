@@ -32,6 +32,12 @@ namespace ECommerce.Server.Controllers
             return Ok(await _productService.GetProductsByCategoryAsync(categoryUrl));
         }
 
+        [HttpGet("featured")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetFeaturedProducts()
+        {
+            return Ok(await _productService.GetFeaturedProducts());
+        }
+
         [HttpGet("search/{searchText}")]
         public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProducts(string searchText)
         {
